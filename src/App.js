@@ -10,25 +10,38 @@ class App extends React.Component {
 
     this.state = {
       amiibos: [],
-      gameSeries: [],
+      gameSeries_dropdown: [],
+      amiiboSeries_dropdown: [],
       isLoading: true
     }
 
   }
 
-  createDropdownCategory = function(dbInput, desiredSeries) {
+  //This function scans the given cateory (desiredseries) of the amiibo db input, and then returns a string array of categories to use for a drop down menu. This allows the dropdowns to be generated dynamically rather than being hardcoded in the event new categories or series are added to the API.
+  createDropdownCategory (dbInput, desiredSeries) {
+    const categories = {}
+    dbInput.forEach(({ [desiredSeries]: category  }) => categories[category] = true)
+    return Object.keys(categories);
+
+    //////////////////////////////////////
+
+    //Init the variable that will store the category entries and the flag that triggers when a category is already in the list
     let dropdownCategories = [];
     let inCategory = false;
 
+    //map the dbInput values for each amiibo
       dbInput.map((amiibo) => {
 
+        //loop through the existing list of categories and check to see if the selected category is already in the list
         for (let i = 0; i < dropdownCategories.length; i++) {
           if (amiibo[desiredSeries] == dropdownCategories[i]) {
+            //if it is, terminate the for loop and set the flag to true
             inCategory = true;
             i = dropdownCategories.length;
           }
         }
 
+        //if the category wasn't in the list yet, then add it, otherwise reset the flag to false and continue to the next amiibo to check its category
         if (inCategory == false) {
           dropdownCategories.push(amiibo[desiredSeries]);
         } else {
@@ -36,6 +49,7 @@ class App extends React.Component {
         }
       })
 
+      //return the string array of categories
       return dropdownCategories;
   }
 
@@ -52,11 +66,13 @@ class App extends React.Component {
       response = response.data.amiibo;
       this.setState({
         amiibos: response,
+        gameSeries_dropdown: this.createDropdownCategory(response, "gameSeries"),
+        amiiboSeries_dropdown: this.createDropdownCategory(response, "amiiboSeries"),
         isLoading: false
       });
-
-      console.log(this.createDropdownCategory(this.state.amiibos, "gameSeries"));
-      console.log(this.createDropdownCategory(this.state.amiibos, "amiiboSeries"));
+      console.log('amiibos', this.state.amiibos);
+      console.log('game series', this.state.gameSeries_dropdown);
+      console.log('amiibo series', this.state.amiiboSeries_dropdown);
     })
 
   }
