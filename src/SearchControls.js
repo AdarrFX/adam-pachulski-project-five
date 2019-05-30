@@ -15,7 +15,7 @@ class SearchControls extends React.Component {
         return (
             <div className="search">
                 <form action="">
-                    <input type="text" />
+                    <input type="text" onChange={this.props.handleChangeTextInput}/>
                     <select onChange={this.props.handleChangeAmiiboSeries} name="amiiboSeries">
                     <option value="0">Any Amiibo Series</option>
                         {

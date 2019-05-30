@@ -11,6 +11,7 @@ class App extends React.Component {
 
     this.state = {
       amiibos: [],
+      filteredSearchAmiibos: [],
       gameSeriesQuery: null,
       amiiboSeriesQuery: null,
       gameSeriesDropdown: [],
@@ -21,6 +22,7 @@ class App extends React.Component {
 
     this.handleChangeAmiiboSeries = this.handleChangeAmiiboSeries.bind(this);
     this.handleChangeGameSeries = this.handleChangeGameSeries.bind(this);
+    this.handleChangeTextInput = this.handleChangeTextInput.bind(this);
     this.getAmiibos = this.getAmiibos.bind(this);
 
   }
@@ -88,6 +90,7 @@ class App extends React.Component {
       response = response.data.amiibo;
       this.setState({
         amiibos: response,
+        filteredSearchAmiibos: response
       });
 
       console.log(this.state.amiibos);
@@ -126,14 +129,30 @@ class App extends React.Component {
 
   }
 
-  // handleChangeTextInput(e) {
+  handleChangeTextInput(e) {
 
+    console.log(e.target.value)
 
-  //   let returnedAmiibos = this.state.amiibos.filter((amiibo) => {
+      const regex = new RegExp(e.target.value, "gi");
+      let returnedAmiibos = [...this.state.amiibos]
 
-  //   });
+      console.log(regex)
 
-  // }
+    if (regex != /(?:)/gi){
+      console.log("searching...")
+      returnedAmiibos = this.state.amiibos.filter((amiibo) => {
+        return regex.test(amiibo.character);
+      });
+    }
+
+    console.log("Number of matching items: " + returnedAmiibos.length)
+    console.log(returnedAmiibos)
+
+    this.setState({
+      filteredSearchAmiibos: returnedAmiibos
+    });
+
+  }
 
   render() {
     return (
@@ -145,7 +164,7 @@ class App extends React.Component {
 
           {this.state.amiiboSeriesLoading || this.state.gameSeriesLoading ? <p className="loadText">Connecting to database...</p> :
 
-            <SearchControls amiiboSeries={this.state.amiiboSeriesDropdown} gameSeries={this.state.gameSeriesDropdown} getAmiibos={this.getAmiibos} handleChangeAmiiboSeries={this.handleChangeAmiiboSeries} handleChangeGameSeries={this.handleChangeGameSeries} />
+            <SearchControls amiiboSeries={this.state.amiiboSeriesDropdown} gameSeries={this.state.gameSeriesDropdown} getAmiibos={this.getAmiibos} handleChangeTextInput={this.handleChangeTextInput} handleChangeAmiiboSeries={this.handleChangeAmiiboSeries} handleChangeGameSeries={this.handleChangeGameSeries} />
 
           }
 
@@ -154,7 +173,7 @@ class App extends React.Component {
         {/* This section will be populated with the Amiibo results */}
         <section className="results-wrapper">
           <div className="amiibo-results">
-            {this.state.amiibos.map((amiibo) => {
+            {this.state.filteredSearchAmiibos.map((amiibo) => {
               return <AmiiboCard imageURL={amiibo.image} charName={amiibo.character} videoGame={amiibo.gameSeries} releaseDate={amiibo.release.na} key={(amiibo.head + amiibo.tail)} />
             })}
             <p>Placeholder Text</p>
