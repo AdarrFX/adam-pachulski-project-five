@@ -6,23 +6,29 @@ import SearchControls from './SearchControls';
 
 class App extends React.Component {
 
+  
   constructor() {
     super();
 
+    let pageNumber = 1;
+    this.filteredSearchAmiibos = [];
+    this.resultsToDisplay = 10;
+    
     this.state = {
       amiibos: [],
-      filteredSearchAmiibos: [],
       gameSeriesQuery: null,
       amiiboSeriesQuery: null,
       gameSeriesDropdown: [],
       amiiboSeriesDropdown: [],
       amiiboSeriesLoading: true,
-      gameSeriesLoading: true
+      gameSeriesLoading: true,
+      amiiboResultsToDisplayArray: [],
     }
 
     this.handleChangeAmiiboSeries = this.handleChangeAmiiboSeries.bind(this);
     this.handleChangeGameSeries = this.handleChangeGameSeries.bind(this);
     this.handleChangeTextInput = this.handleChangeTextInput.bind(this);
+    this.handleResultCountChange = this.handleResultCountChange.bind(this);
     this.getAmiibos = this.getAmiibos.bind(this);
 
   }
@@ -32,6 +38,28 @@ class App extends React.Component {
     return myArr.filter((obj, pos, arr) => {
       return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos
     })
+  }
+
+  displayResultCount() {
+    let resultsDisplayArray = [];
+   
+    if (this.filteredSearchAmiibos.length <= this.resultsToDisplay){
+     
+      resultsDisplayArray = this.filteredSearchAmiibos.slice();
+      console.log("Dsiplaying all results. Below view count.")
+    } else {
+      
+      console.log("Results exceeds display count of " + this.resultsToDisplay + ". Truncating...")
+      resultsDisplayArray = this.filteredSearchAmiibos.slice(0, this.resultsToDisplay)
+
+      
+
+    }
+
+    this.setState({
+      amiiboResultsToDisplayArray: resultsDisplayArray
+    })
+    
   }
 
   componentDidMount() {
@@ -88,12 +116,13 @@ class App extends React.Component {
       }
     }).then((response) => {
       response = response.data.amiibo;
+      this.filteredSearchAmiibos = [...response]
       this.setState({
         amiibos: response,
-        filteredSearchAmiibos: response
       });
 
       console.log(this.state.amiibos);
+      this.displayResultCount();
     })
 
   }
@@ -120,37 +149,44 @@ class App extends React.Component {
     if (e.target.value === "0") {
       this.setState({
         gameSeriesQuery: null
-      })
+      });
     } else {
       this.setState({
         gameSeriesQuery: e.target.value
-      })
+      });
     }
+  }
 
+  handleResultCountChange(e) {
+    this.resultsToDisplay = e.target.value;
+    this.displayResultCount();
   }
 
   handleChangeTextInput(e) {
 
     console.log(e.target.value)
+    let match = false;
 
-      const regex = new RegExp(e.target.value, "gi");
-      let returnedAmiibos = [...this.state.amiibos]
+    let regex = new RegExp(e.target.value, "i");
+    let returnedAmiibos = [];
 
-      console.log(regex)
+    returnedAmiibos = this.state.amiibos.filter((amiibo) => {
+      return regex.test(amiibo.character);
+    });
 
-    if (regex != /(?:)/gi){
-      console.log("searching...")
-      returnedAmiibos = this.state.amiibos.filter((amiibo) => {
-        return regex.test(amiibo.character);
-      });
-    }
-
+    
     console.log("Number of matching items: " + returnedAmiibos.length)
     console.log(returnedAmiibos)
 
-    this.setState({
-      filteredSearchAmiibos: returnedAmiibos
-    });
+    this.filteredSearchAmiibos = [...returnedAmiibos];
+
+    console.log("Number of items to display is: " + this.filteredSearchAmiibos.length)
+    console.log(this.filteredSearchAmiibos)
+    this.displayResultCount();
+
+  }
+
+  handleClickPageCount(e) {
 
   }
 
@@ -164,7 +200,7 @@ class App extends React.Component {
 
           {this.state.amiiboSeriesLoading || this.state.gameSeriesLoading ? <p className="loadText">Connecting to database...</p> :
 
-            <SearchControls amiiboSeries={this.state.amiiboSeriesDropdown} gameSeries={this.state.gameSeriesDropdown} getAmiibos={this.getAmiibos} handleChangeTextInput={this.handleChangeTextInput} handleChangeAmiiboSeries={this.handleChangeAmiiboSeries} handleChangeGameSeries={this.handleChangeGameSeries} />
+            <SearchControls amiiboSeries={this.state.amiiboSeriesDropdown} gameSeries={this.state.gameSeriesDropdown} getAmiibos={this.getAmiibos} handleChangeTextInput={this.handleChangeTextInput} handleChangeAmiiboSeries={this.handleChangeAmiiboSeries} handleChangeGameSeries={this.handleChangeGameSeries} handleResultCountChange={this.handleResultCountChange} />
 
           }
 
@@ -173,7 +209,7 @@ class App extends React.Component {
         {/* This section will be populated with the Amiibo results */}
         <section className="results-wrapper">
           <div className="amiibo-results">
-            {this.state.filteredSearchAmiibos.map((amiibo) => {
+            {this.state.amiiboResultsToDisplayArray.map((amiibo) => {
               return <AmiiboCard imageURL={amiibo.image} charName={amiibo.character} videoGame={amiibo.gameSeries} releaseDate={amiibo.release.na} key={(amiibo.head + amiibo.tail)} />
             })}
             <p>Placeholder Text</p>

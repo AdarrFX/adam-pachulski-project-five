@@ -32,6 +32,12 @@ class SearchControls extends React.Component {
                             })
                         }
                     </select>
+                    <select onChange={this.props.handleResultCountChange} name="resultsToDisplay">
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                    </select>
                     <button onClick={this.props.getAmiibos}>Search for Amiibos</button>
                 </form>
             </div>
