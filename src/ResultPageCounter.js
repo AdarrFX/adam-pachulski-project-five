@@ -2,11 +2,18 @@ import React from "react";
 
 class ResultPageCounter extends React.Component {
 
-    render(){
-        return(
-            <div className="page-counter">
-                
-            </div>
+    constructor() {
+        super();
+    }
+
+    render() {
+
+        return (
+            <React.Fragment>
+                <span onClick={() => {
+                    this.props.handleClickPageCount(this.props.pageNum - 1)
+                }}> {this.props.pageNum} </span>
+            </React.Fragment>
         );
     }
 
