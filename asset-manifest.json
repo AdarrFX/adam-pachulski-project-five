@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/adam-pachulski-project-five/static/css/main.b9958f5f.chunk.css",
+    "main.js": "/adam-pachulski-project-five/static/js/main.98e71fa7.chunk.js",
+    "main.js.map": "/adam-pachulski-project-five/static/js/main.98e71fa7.chunk.js.map",
+    "runtime~main.js": "/adam-pachulski-project-five/static/js/runtime~main.7f7aca1e.js",
+    "runtime~main.js.map": "/adam-pachulski-project-five/static/js/runtime~main.7f7aca1e.js.map",
+    "static/js/2.4477133f.chunk.js": "/adam-pachulski-project-five/static/js/2.4477133f.chunk.js",
+    "static/js/2.4477133f.chunk.js.map": "/adam-pachulski-project-five/static/js/2.4477133f.chunk.js.map",
+    "index.html": "/adam-pachulski-project-five/index.html",
+    "precache-manifest.f852345292fe619ee0b935e0ad884958.js": "/adam-pachulski-project-five/precache-manifest.f852345292fe619ee0b935e0ad884958.js",
+    "service-worker.js": "/adam-pachulski-project-five/service-worker.js",
+    "static/css/main.b9958f5f.chunk.css.map": "/adam-pachulski-project-five/static/css/main.b9958f5f.chunk.css.map"
+  }
+}
