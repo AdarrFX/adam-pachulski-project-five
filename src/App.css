@@ -44,6 +44,12 @@ header h1 {
   text-shadow: 5px 5px 8px rgba(0,0,0,0.30), -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;;
 }
 
+header .header-credits {
+  font-size: 0.8rem;
+  margin: 0;
+  padding: 0;
+}
+
 header .header-container {
   margin: 0 auto;
   overflow: auto;

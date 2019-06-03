@@ -85,6 +85,8 @@ class App extends React.Component {
   }
 
   displayResultCount() {
+
+    //Update the array which will display the results depending on the page range (how many results to display) and the page number.
     let resultsDisplayArray = [];
 
     let pageRange = this.getPageRange(this.filteredSearchAmiibos, this.pageNumber, this.resultsToDisplay);
@@ -109,6 +111,7 @@ class App extends React.Component {
       this.numberOfPages = Math.floor(this.filteredSearchAmiibos.length / this.resultsToDisplay);
     }
 
+    //build the page numbers which will let the user navigate to a desired page.
     for (let i = 1; i <= this.numberOfPages; i++) {
       this.pageCountJSX.push(<ResultPageCounter handleClickPageCount={this.handleClickPageCount} pageNum={i} key={i} />)
     }
@@ -116,7 +119,7 @@ class App extends React.Component {
 
   componentDidMount() {
 
-    //Axios call to get the amiibo database
+    //Axios call to get the amiibo series and game series information from the database and use them to populate the dropdown fields
 
     axios({
       method: "GET",
@@ -159,6 +162,7 @@ class App extends React.Component {
 
   getAmiibos(e) {
 
+    //search the database using the selected search parameters via an Axios API call
     e.preventDefault();
 
     this.pageNumber = 0;
@@ -180,6 +184,7 @@ class App extends React.Component {
         type: this.state.figuresOnly
       }
     }).then((response) => {
+      //store the data returned from the API
       response = response.data.amiibo;
       this.filteredSearchAmiibos = [...response]
       this.setState({
@@ -198,11 +203,13 @@ class App extends React.Component {
       // Error
       if (error.response) {
         if (error.response.data.code === 404) {
+          //if no results were found, set a flag to display a message indicating so
           this.setState({
             noResultsFound: true
           })
         }
       } else if (error.request) {
+        //alert box in the event the API experiences another error
         alert("The API containing the data did not respond to the request. Try again. If it still doesn't work, the API may be down or experiencing issues!");
       }
     });
@@ -211,6 +218,7 @@ class App extends React.Component {
 
   handleChangeAmiiboSeries(e) {
 
+    //update the category to be searched based on the amiibo series
     if (e.target.value === "0") {
       this.setState({
         amiiboSeriesQuery: null
@@ -225,6 +233,7 @@ class App extends React.Component {
 
   handleChangeGameSeries(e) {
 
+    //update the category to be searched based on the video game series
     if (e.target.value === "0") {
       this.setState({
         gameSeriesQuery: null
@@ -237,6 +246,7 @@ class App extends React.Component {
   }
 
   handleResultCountChange(e) {
+    //change the number of results to be displayed and update the page range using the displayResultCount function
     this.resultsToDisplay = e.target.value;
     this.pageNumber = 0;
     this.displayResultCount();
@@ -244,6 +254,7 @@ class App extends React.Component {
 
   handleChangeTextInput(e) {
 
+    //when the text input changes, use a REGEX search to filter through the displayed results, updating the results to be displayed at the same time
     this.pageNumber = 0;
 
     let regex = new RegExp(e.target.value, "i");
@@ -262,6 +273,8 @@ class App extends React.Component {
   }
 
   handleChangeFiguresOnly = (e) => {
+
+    //Allows the user to search for figures only in the API (no amiibo cards or wool amiibos)
     if (e.target.checked === true) {
       this.setState({
         figuresOnly: "figure"
@@ -274,12 +287,16 @@ class App extends React.Component {
   }
 
   handleClickPageCount = (pageNum) => {
+
+    //changes the page number to be displayed when the user clicks
     this.pageNumber = pageNum;
 
     this.displayResultCount();
   }
 
   hideInstructions = () => {
+
+    //applies CSS styling to remove the instructions when the user presses the X button
     this.setState({
       showInstructions: {
         display: 'none'
@@ -300,6 +317,7 @@ class App extends React.Component {
             <img src={redMushroom} alt="Small Red Mario Mushroom" />
             <h1>Amiibo Search</h1>
             <img src={greenMushroom} alt="Small Green Mario Mushroom" />
+            <p className="header-credits">By Adam Pachulski, using the Amiibo API (amiiboapi.com)</p>
           </div>
           {this.state.amiiboSeriesLoading || this.state.gameSeriesLoading ? <p className="loadText">Connecting to database...</p> :
             <div className="instruction-controls-wrapper">
