@@ -11,6 +11,11 @@ body {
   font-family: 'Rubik', sans-serif;
 }
 
+p {
+  padding: 4px;
+  margin: 0;
+}
+
 .wrapper {
   max-width: 1400px;
   margin: 0 auto;
@@ -22,6 +27,51 @@ header {
   border: 3px solid rgb(157, 210, 243);
   background-color: rgb(252, 252, 252);
   margin: 0 auto;
+  border-radius: 15px;
+}
+
+header img {
+  width: 35px;
+  height: auto;
+  display: inline-block;
+  margin: 0 20px;
+}
+
+header h1 {
+  display: inline-block;
+  font-family: "Bangers", sans-serif;
+  color: rgb(30,30,30);
+  font-size: 3.5rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-shadow: 4px 4px 8px rgba(0,0,0,0.30);
+}
+
+header .header-container {
+  margin: 0 auto;
+  overflow: auto;
+}
+
+.instruction-controls-wrapper {
+  display: flex;
+  justify-content: space-around;
+}
+
+.instruction-controls-div {
+  border: 2px solid rgb(157, 210, 243);
+  padding: 10px;
+  margin: 5px;
+  box-shadow: 3px 3px 4px rgba(0,0,0,0.20);
+  border-radius: 20px;
+}
+
+.controls-div {
+  width: 70%;
+}
+
+.instruction-div {
+  width: 30%;
+  font-size: 90%;
 }
 
 .search div {
@@ -92,6 +142,7 @@ form {
   border: 3px solid rgb(209, 209, 255);
   padding: 5px;
   background-color: rgb(240, 240, 240);
+  box-shadow: 4px 4px 8px rgba(0,0,0,0.20);
 }
 
 .amiibo-card-image {
@@ -119,4 +170,32 @@ form {
   to {
     transform: rotate(360deg);
   }
+}
+
+@media(max-width: 700px){
+
+  .instruction-controls-wrapper {
+    flex-direction: column;
+  }
+
+  .amiibo-card {
+    width: calc(50% - 15px);
+    margin: 5px;
+    border: 3px solid rgb(209, 209, 255);
+    padding: 5px;
+    background-color: rgb(240, 240, 240);
+  }
+  
+}
+
+@media(max-width: 400px){
+
+  .amiibo-card {
+    width: calc(100% - 15px);
+    margin: 5px;
+    border: 3px solid rgb(209, 209, 255);
+    padding: 5px;
+    background-color: rgb(240, 240, 240);
+  }
+  
 }
