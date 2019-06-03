@@ -36,6 +36,9 @@ class App extends React.Component {
       gameSeriesLoading: true,
       noResultsFound: false,
       amiiboResultsToDisplayArray: [],
+      showInstructions: {
+        display: 'initial'
+      },
     }
 
     this.handleChangeAmiiboSeries = this.handleChangeAmiiboSeries.bind(this);
@@ -276,6 +279,14 @@ class App extends React.Component {
     this.displayResultCount();
   }
 
+  hideInstructions = () => {
+    this.setState({
+      showInstructions: {
+        display: 'none'
+      }
+    })
+  }
+
   render() {
 
     this.calculateNumberOfPages();
@@ -287,7 +298,7 @@ class App extends React.Component {
         <header>
           <div className="header-container">
             <img src={redMushroom} alt="Small Red Mario Mushroom" />
-            <h1>Amiibo Browser</h1>
+            <h1>Amiibo Search</h1>
             <img src={greenMushroom} alt="Small Green Mario Mushroom" />
           </div>
           {this.state.amiiboSeriesLoading || this.state.gameSeriesLoading ? <p className="loadText">Connecting to database...</p> :
@@ -295,7 +306,8 @@ class App extends React.Component {
               <div className="controls-div instruction-controls-div">
                 <SearchControls amiiboSeries={this.state.amiiboSeriesDropdown} gameSeries={this.state.gameSeriesDropdown} getAmiibos={this.getAmiibos} handleChangeTextInput={this.handleChangeTextInput} handleChangeAmiiboSeries={this.handleChangeAmiiboSeries} handleChangeGameSeries={this.handleChangeGameSeries} handleResultCountChange={this.handleResultCountChange} handleChangeFiguresOnly={this.handleChangeFiguresOnly} />
               </div>
-              <div className="instruction-div instruction-controls-div">
+              <div className="instruction-div instruction-controls-div" style={this.state.showInstructions}>
+                <button className="close-instructions" onClick={this.hideInstructions}>X</button>
                 <p>Instructions:</p>
                 <p>Use the search parameters to narrow down your amiibo. Character names can be entered in the search box to narrow down existing search results, or can be submitted via the search button to look for a specific character in the database.</p>
               </div>

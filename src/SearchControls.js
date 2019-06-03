@@ -59,7 +59,7 @@ class SearchControls extends React.Component {
 
                     <div>
                         <input type="checkbox" defaultChecked={false} id="figures-only" name="figures-only" onChange={this.props.handleChangeFiguresOnly} />
-                        <label htmlFor="figures-only">Figures Only (Excludes Cards and Wool Amiibos)</label>
+                        <label htmlFor="figures-only">Figures Only (No Cards or Wool Amiibos)</label>
                     </div>
 
                     <div>
@@ -74,8 +74,8 @@ class SearchControls extends React.Component {
                         <option value="30">30</option>
                         <option value="40">40</option>
                     </select>
-
-                    <button onClick={this.props.getAmiibos}>Search for Amiibos</button>
+                    <br></br>
+                    <button className="submit-button" onClick={this.props.getAmiibos}>Search for Amiibos</button>
                 </form>
             </div>
         );
