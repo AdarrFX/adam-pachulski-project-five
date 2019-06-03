@@ -9,9 +9,9 @@ class AmiiboCard extends React.Component {
                     <img src={this.props.imageURL} alt={this.props.charName} />
                 </div>
                 <div className="amiibo-card-info">
-                    <p>Character Name: <span className="amiibo-card-info-charname">{this.props.charName}</span></p>
-                    <p>From Game: <span className="amiibo-card-info-game">{this.props.videoGame}</span></p>
-                    <p>Release Date (NA): <span className="amiibo-card-info-releasedate">{this.props.releaseDate}</span></p>
+                    <p>Character Name: <span className="amiibo-card-info">{this.props.charName}</span></p>
+                    <p>From Game: <span className="amiibo-card-info">{this.props.videoGame}</span></p>
+                    <p>Release Date (NA): <span className="amiibo-card-info">{this.props.releaseDate}</span></p>
                 </div>
             </div>
         );

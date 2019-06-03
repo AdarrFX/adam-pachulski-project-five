@@ -34,11 +34,11 @@ class SearchControls extends React.Component {
                 <form action="">
 
                     <div>
-                        <label htmlFor="search-by-series">{this.state.searchBySeriesText}</label>
                         <input type="checkbox" name="search-by-series" id="search-by-series" defaultChecked={true} onChange={this.searchSelector} />
+                        <label htmlFor="search-by-series">{this.state.searchBySeriesText}</label>
                     </div>
 
-                    <div>
+                    <div className="search-categories">
                         <select onChange={this.props.handleChangeAmiiboSeries} disabled={!this.state.searchBySeries} name="amiiboSeries">
                             <option value="0">Any Amiibo Series</option>
                             {
@@ -58,8 +58,8 @@ class SearchControls extends React.Component {
                     </div>
 
                     <div>
-                        <label htmlFor="figures-only">Figures Only (Excludes Cards and Wool Amiibos)</label>
                         <input type="checkbox" defaultChecked={false} id="figures-only" name="figures-only" onChange={this.props.handleChangeFiguresOnly} />
+                        <label htmlFor="figures-only">Figures Only (Excludes Cards and Wool Amiibos)</label>
                     </div>
 
                     <div>
@@ -69,10 +69,10 @@ class SearchControls extends React.Component {
 
                     <label htmlFor="results-to-display">Results per page: </label>
                     <select onChange={this.props.handleResultCountChange} name="results-to-display">
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                        <option value="50">50</option>
+                        <option value="12">12</option>
+                        <option value="22">22</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
                     </select>
 
                     <button onClick={this.props.getAmiibos}>Search for Amiibos</button>

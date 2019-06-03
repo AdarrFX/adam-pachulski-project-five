@@ -16,11 +16,11 @@ class App extends React.Component {
 
     this.numberOfPages = 0;
     this.filteredSearchAmiibos = [];
-    this.resultsToDisplay = 10;
+    this.resultsToDisplay = 12;
     this.pageCountJSX = [];
     this.pageNumber = 0;
     this.characterSearch = "";
-    
+
     this.state = {
       amiibos: [],
       gameSeriesQuery: null,
@@ -160,7 +160,12 @@ class App extends React.Component {
       this.characterSearch = null;
     }
 
-    console.log("Figures only?" + this.state.figuresOnly)
+    console.log("Amiibo Series: " + this.state.amiiboSeriesQuery)
+    console.log("Game Series: " + this.state.gameSeriesQuery)
+
+    console.log("Figure?: " + this.state.figuresOnly)
+    console.log("Character: " + this.characterSearch)
+
 
     axios({
       method: "GET",
@@ -183,7 +188,13 @@ class App extends React.Component {
 
       console.log(this.state.amiibos);
       this.displayResultCount();
+
     }).catch((error) => {
+
+      this.filteredSearchAmiibos = [];
+      this.setState({
+        amiibos: []
+      })
       // Error
       if (error.response) {
         console.log(error.response.data.code)
@@ -232,6 +243,7 @@ class App extends React.Component {
 
   handleResultCountChange(e) {
     this.resultsToDisplay = e.target.value;
+    this.pageNumber = 0;
     this.displayResultCount();
   }
 
@@ -303,19 +315,32 @@ class App extends React.Component {
 
         {/* This section will be populated with the Amiibo results */}
         <section className="results-wrapper">
+          <div className="search-pages">
+            {this.numberOfPages > 0 && (
+              <p>Pages of Results:</p>
+            )}
+            <p> {this.pageCountJSX} </p>
+            {this.numberOfPages > 0 && (
+              <p className="page-indicator">Displaying page {this.pageNumber + 1} of {this.numberOfPages}</p>
+            )
+            }
+          </div>
           <div className="amiibo-results">
-            <div className="search-pages">
-              <p> {this.pageCountJSX} </p>
-              {this.numberOfPages > 0 && (
-                <p className="page-indicator">Displaying page {this.pageNumber + 1} of {this.numberOfPages}</p>
-              )
-              }
-            </div>
             {this.state.amiiboResultsToDisplayArray.map((amiibo) => {
               return <AmiiboCard imageURL={amiibo.image} charName={amiibo.character} videoGame={amiibo.gameSeries} releaseDate={amiibo.release.na} key={(amiibo.head + amiibo.tail)} />
             })}
             {this.state.noResultsFound === true && (
-            <p className="no-results-text">No search results found for the exact character you entered. Try searching by Category first and then filtering results by typing in the character name.</p>
+              <p className="no-results-text">No search results found for the exact character you entered. Try searching by Category first and then filtering results by typing in the character name.</p>
+            )
+            }
+          </div>
+          <div className="search-pages">
+            {this.numberOfPages > 0 && (
+              <p>Pages of Results:</p>
+            )}
+            <p> {this.pageCountJSX} </p>
+            {this.numberOfPages > 0 && (
+              <p className="page-indicator">Displaying page {this.pageNumber + 1} of {this.numberOfPages}</p>
             )
             }
           </div>
