@@ -72,10 +72,18 @@ form {
 
 .page-number {
   cursor: pointer;
+  border: none;
+  background: none;
+  margin: 2px;
+  padding: 1px;
 }
 
 .page-number:hover {
   color: blue;
+}
+
+.page-number:focus {
+  border: 2px solid blue;
 }
 
 .amiibo-card {

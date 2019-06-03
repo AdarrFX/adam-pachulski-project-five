@@ -83,10 +83,6 @@ class App extends React.Component {
     let pageRange = this.getPageRange(this.filteredSearchAmiibos, this.pageNumber, this.resultsToDisplay);
     resultsDisplayArray = this.filteredSearchAmiibos.slice(pageRange.start, pageRange.end);
 
-    console.log(this.getPageRange(this.filteredSearchAmiibos, this.pageNumber, this.resultsToDisplay))
-    console.log(resultsDisplayArray);
-    console.log("Above is the results")
-
     this.setState({
       amiiboResultsToDisplayArray: resultsDisplayArray
     })
@@ -128,7 +124,9 @@ class App extends React.Component {
         amiiboSeriesDropdown: response,
         amiiboSeriesLoading: false
       });
-    })
+    }).catch(() => {
+      alert("The API containing the data did not respond to the request. Try again. If it still doesn't work, the API may be down or experiencing issues!");
+    });
 
     axios({
       method: "GET",
@@ -147,7 +145,9 @@ class App extends React.Component {
         gameSeriesDropdown: uniqueGameSeries,
         gameSeriesLoading: false
       });
-    })
+    }).catch(() => {
+      alert("The API containing the data did not respond to the request. Try again. If it still doesn't work, the API may be down or experiencing issues!");
+    });
   }
 
   getAmiibos(e) {
@@ -159,12 +159,6 @@ class App extends React.Component {
     if (this.characterSearch === "") {
       this.characterSearch = null;
     }
-
-    console.log("Amiibo Series: " + this.state.amiiboSeriesQuery)
-    console.log("Game Series: " + this.state.gameSeriesQuery)
-
-    console.log("Figure?: " + this.state.figuresOnly)
-    console.log("Character: " + this.characterSearch)
 
 
     axios({
@@ -186,7 +180,6 @@ class App extends React.Component {
         noResultsFound: false,
       })
 
-      console.log(this.state.amiibos);
       this.displayResultCount();
 
     }).catch((error) => {
@@ -197,23 +190,19 @@ class App extends React.Component {
       })
       // Error
       if (error.response) {
-        console.log(error.response.data.code)
-        if (error.response.data.code == 404) {
+        if (error.response.data.code === 404) {
           this.setState({
             noResultsFound: true
           })
         }
       } else if (error.request) {
         alert("The API containing the data did not respond to the request. Try again. If it still doesn't work, the API may be down or experiencing issues!");
-        console.log(error.request);
       }
     });
 
   }
 
   handleChangeAmiiboSeries(e) {
-
-    console.log("Amiibo Series selected is: " + e.target.value);
 
     if (e.target.value === "0") {
       this.setState({
@@ -229,7 +218,6 @@ class App extends React.Component {
 
   handleChangeGameSeries(e) {
 
-    console.log("Game Series selected is: " + e.target.value);
     if (e.target.value === "0") {
       this.setState({
         gameSeriesQuery: null
@@ -251,9 +239,6 @@ class App extends React.Component {
 
     this.pageNumber = 0;
 
-    console.log(e.target.value)
-    let match = false;
-
     let regex = new RegExp(e.target.value, "i");
     let returnedAmiibos = [];
 
@@ -261,13 +246,7 @@ class App extends React.Component {
       return regex.test(amiibo.character);
     });
 
-    console.log("Number of matching items: " + returnedAmiibos.length)
-    console.log(returnedAmiibos)
-
     this.filteredSearchAmiibos = [...returnedAmiibos];
-
-    console.log("Number of items to display is: " + this.filteredSearchAmiibos.length)
-    console.log(this.filteredSearchAmiibos)
 
     this.characterSearch = e.target.value;
 
@@ -297,7 +276,6 @@ class App extends React.Component {
 
     this.calculateNumberOfPages();
 
-    console.log(this.noResultsFound + "no results found?")
     return (
       <div className="wrapper">
 
